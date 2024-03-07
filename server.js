@@ -5,9 +5,6 @@ const errorHandle = require('./errorHandle');
 const todos = [];
 
 const requestListener = (req, res) => {
-  // console.info(req.url);
-  // console.log(req.method);
-
   const headers = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
     'Access-Control-Allow-Origin': '*',
@@ -140,9 +137,6 @@ const requestListener = (req, res) => {
     return;
   }
 
-  // res.statusCode = 404;
-  // res.setHeader('Content-Type', 'text/plain');
-  // res.end('Not found 404 ~');
   res.writeHead(404, headers);
   res.write(JSON.stringify({
     "status": "false",
@@ -153,7 +147,4 @@ const requestListener = (req, res) => {
 
 // create server
 const server = http.createServer(requestListener);
-// server.listen(process.env.PORT || 3000, 'localhost', () => {
-//   console.log('Server running at http://localhost:3000/');
-// });
 server.listen(process.env.PORT || 3000);
