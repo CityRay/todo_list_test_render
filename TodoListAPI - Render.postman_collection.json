@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "971f9ddf-de0e-474b-8089-b3689456b86c",
+		"name": "TodoListAPI - Render",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "131402"
+	},
+	"item": [
+		{
+			"name": "todo - 取得全部",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/todos",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todo - 新增",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"要喝 2000CC 的水\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/todos",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todo - 刪除全部",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/todos",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todo - 刪除單筆",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/todo/5ecc7ed2-023a-436c-90f8-ed9172c2cfc8",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"todo",
+						"5ecc7ed2-023a-436c-90f8-ed9172c2cfc8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todo - 單筆更新",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"update 要喝水\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/todo/76706b0a-219a-4e0c-92eb-c50b7f1b0a63",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"todo",
+						"76706b0a-219a-4e0c-92eb-c50b7f1b0a63"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://todo-list-test-render.onrender.com",
+			"type": "string"
+		}
+	]
+}
