@@ -4,9 +4,9 @@ const errorHandle = require('./errorHandle');
 
 const todos = [];
 
-const server = http.createServer((req, res) => {
-  console.info(req.url);
-  console.log(req.method);
+const requestListener = (req, res) => {
+  // console.info(req.url);
+  // console.log(req.method);
 
   const headers = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
@@ -20,8 +20,6 @@ const server = http.createServer((req, res) => {
   req.on('data', chunk => {
     body += chunk;
   });
-
-
 
   if (req.url === '/todos' && req.method === 'GET') {
     res.writeHead(200, headers);
@@ -151,8 +149,10 @@ const server = http.createServer((req, res) => {
     "message": "Not found 404 ~"
   }));
   res.end();
-});
+};
 
-server.listen(3000, 'localhost', () => {
+// create server
+const server = http.createServer(requestListener);
+server.listen(process.env.PORT || 3000, 'localhost', () => {
   console.log('Server running at http://localhost:3000/');
 });
