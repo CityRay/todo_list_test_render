@@ -95,13 +95,17 @@ const requestListener = (req, res) => {
           throw new Error('ID is required');
         }
 
-        const todoTitle = JSON.parse(body).title;
-        const findIdx = todos.findIndex(todo => todo.id === id);
-        if (!todoTitle || findIdx === -1) {
-          throw new Error('ID or Title not found');
+        const { title } = JSON.parse(body);
+        if (!title) {
+          throw new Error('Title is required');
         }
 
-        todos[findIdx].title = todoTitle;
+        const findIdx = todos.findIndex(todo => todo.id === id);
+        if (findIdx === -1) {
+          throw new Error('Todo not found');
+        }
+
+        todos[findIdx].title = title;
         sendResponse(res, 200, todos[findIdx], "Update success");
       } catch (error) {
         console.error(error.message);
