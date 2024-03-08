@@ -4,14 +4,24 @@ const errorHandle = require('./errorHandle');
 
 const todos = [];
 
-const requestListener = (req, res) => {
-  const headers = {
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'PATCH, POST, GET,OPTIONS,DELETE',
-    'Content-Type': 'application/json'
-  };
+const headers = {
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'PATCH, POST, GET, OPTIONS, DELETE',
+  'Content-Type': 'application/json'
+};
 
+const sendResponse = (res, status = 200, data, message = '') => {
+  res.writeHead(status, headers);
+  res.write(JSON.stringify({
+    status,
+    data,
+    message
+  }));
+  res.end();
+};
+
+const requestListener = (req, res) => {
   let body = "";
 
   req.on('data', chunk => {
@@ -19,19 +29,14 @@ const requestListener = (req, res) => {
   });
 
   if (req.url === '/todos' && req.method === 'GET') {
-    res.writeHead(200, headers);
-    res.write(JSON.stringify({
-      "status": "success",
-      "data": todos
-    }));
-    res.end();
+    sendResponse(res, 200, todos, "");
     return;
   }
 
   if (req.url === '/todos' && req.method === 'POST') {
     req.on('end', () => {
       try {
-        const title = JSON.parse(body).title;
+        const { title } = JSON.parse(body);
 
         if (!title) {
           throw new Error('Title is required');
@@ -40,12 +45,7 @@ const requestListener = (req, res) => {
         const todo = { id: uuidv4(), title };
         todos.push(todo);
 
-        res.writeHead(200, headers);
-        res.write(JSON.stringify({
-          "status": "success",
-          "data": todos
-        }));
-        res.end();
+        sendResponse(res, 200, todos, "success");
       } catch (error) {
         console.error(error.message);
         errorHandle(res, error);
@@ -58,14 +58,7 @@ const requestListener = (req, res) => {
   if (req.url === '/todos' && req.method === 'DELETE') {
     // clear all todos
     todos.length = 0;
-
-    res.writeHead(200, headers);
-    res.write(JSON.stringify({
-      "status": "success",
-      "data": todos,
-      "message": "Delete success"
-    }));
-    res.end();
+    sendResponse(res, 200, todos, "Delete success");
     return;
   }
 
@@ -85,14 +78,7 @@ const requestListener = (req, res) => {
 
       // remove todo by id
       todos.splice(findIdx, 1);
-
-      res.writeHead(200, headers);
-      res.write(JSON.stringify({
-        "status": "success",
-        "data": todos,
-        "message": "Delete success"
-      }));
-      res.end();
+      sendResponse(res, 200, todos, "Delete success");
     } catch (error) {
       console.error(error.message);
       errorHandle(res, error);
@@ -116,12 +102,7 @@ const requestListener = (req, res) => {
         }
 
         todos[findIdx].title = todoTitle;
-        res.writeHead(200, headers);
-        res.write(JSON.stringify({
-          "status": "success",
-          "data": todos[findIdx]
-        }));
-        res.end();
+        sendResponse(res, 200, todos[findIdx], "Update success");
       } catch (error) {
         console.error(error.message);
         errorHandle(res, error);
@@ -137,14 +118,9 @@ const requestListener = (req, res) => {
     return;
   }
 
-  res.writeHead(404, headers);
-  res.write(JSON.stringify({
-    "status": "false",
-    "message": "Not found 404 ~"
-  }));
-  res.end();
+  sendResponse(res, 404, null, "404 Not found!");
 };
 
 // create server
 const server = http.createServer(requestListener);
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 3001);
